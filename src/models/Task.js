@@ -1,4 +1,5 @@
 // Имитация базы данных в памяти
+
 let tasks = require("../../data/tasksData");
 
 let lastId = tasks.length ? Math.max(...tasks.map((t) => t.id)) : 0; // Счетчик для генерации ID
@@ -58,6 +59,16 @@ module.exports = {
   delete(id) {
     const initialLength = tasks.length;
     tasks = tasks.filter((task) => task.id !== id);
+    return tasks.length !== initialLength;
+  },
+
+  /**
+   * Удалить все задачи по userId (для каскадного удаления)
+   * @param {number} userId - ID пользователя
+   */
+  deleteAllByUserId(userId) {
+    const initialLength = tasks.length;
+    tasks = tasks.filter((task) => task.userId !== userId);
     return tasks.length !== initialLength;
   },
 };
